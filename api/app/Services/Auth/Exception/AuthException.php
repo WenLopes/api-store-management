@@ -10,9 +10,9 @@ class AuthException
     CONST GENERIC_EXCEPTION = 'App\Services\Auth\Exception\Types\GenericException';
 
     CONST EXCEPTIONS = [
-        'Tymon\JWTAuth\Exceptions\TokenInvalidException' => 'App\Services\Auth\Exception\Types\TokenInvalidException',
-        'Tymon\JWTAuth\Exceptions\TokenExpiredException' => 'App\Services\Auth\Exception\Types\TokenExpiredException',
-        'Tymon\JWTAuth\Exceptions\JWTException'          => 'App\Services\Auth\Exception\Types\JWTException'
+        'Tymon\JWTAuth\Exceptions\TokenInvalidException'     => 'App\Services\Auth\Exception\Types\TokenInvalidException',
+        'Tymon\JWTAuth\Exceptions\TokenExpiredException'     => 'App\Services\Auth\Exception\Types\TokenExpiredException',
+        'Tymon\JWTAuth\Exceptions\JWTException'              => 'App\Services\Auth\Exception\Types\JWTException'
     ];
 
     protected $exception;
