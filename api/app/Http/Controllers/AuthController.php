@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
@@ -32,37 +33,59 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function login()
+    public function login(LoginRequest $request)
     {
-        $credentials = request(['email', 'password']);
+        try {
+            
+            $credentials = $request->validated();
+    
+            if (! $token = auth()->attempt($credentials)) {
+                return response()->json(['error' => 'Usuário ou senha inválidos'], JsonResponse::HTTP_UNAUTHORIZED);
+            }
+    
+            return $this->respondWithToken($token);
 
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Usuário ou senha inválidos'], 401);
+        } catch (\Exception $e){
+            return response()->json(['error' => 'Erro ao processar requisição'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        return $this->respondWithToken($token);
     }
 
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function me()
+    /** 
+     * @OA\Post(
+     *     path="/api/auth/profile",
+     *     summary="Obter dados de funcionário logado",
+     *     description="Retorno de dados do funcionário logado a partir do Token informado no Header",
+     *     operationId="auth.profile",
+     *     tags={"AuthController"},
+     *     security={{ "bearer": {} }},
+     * 
+     *     @OA\Response(response="200", description="Retorna os dados do funcionário logado"),
+     *     @OA\Response(response="400", description="JSON com response de token não informado")
+     * )
+     */   
+    public function profile()
     {
         return response()->json(auth()->user());
     }
 
-    /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+    /**     
+     * @OA\Post(
+     *     path="/api/auth/logout",
+     *     summary="Deslogar",
+     *     description="Inválida o Token e encerra a session",
+     *     operationId="auth.logout",
+     *     tags={"AuthController"},
+     *     security={{ "bearer": {} }},
+     * 
+     *     @OA\Response(response="200", description="Json com mensagem de sucesso"),
+     *     @OA\Response(response="400", description="JSON com response de token não informado")
+     * )
+     */  
     public function logout()
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Deslogado com sucesso']);
     }
 
     /**
