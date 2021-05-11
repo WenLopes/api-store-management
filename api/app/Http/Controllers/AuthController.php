@@ -8,16 +8,36 @@ use App\Http\Controllers\Controller;
 class AuthController extends Controller
 {
     /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     * path="/api/auth/login",
+     * summary="Autenticação por email e senha",
+     * description="Autenticação do funcionário deve ser realizada através de email e senha",
+     * operationId="auth.login",
+     * tags={"AuthController"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Credenciais do funcionário",
+     *    @OA\JsonContent(
+     *       required={"email","password"},
+     *       @OA\Property(property="email", type="string", format="email", example="employee@mail.com.br"),
+     *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Resposta para credenciais inválidas",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Usuário ou senha inválidos")
+     *        )
+     *     )
+     * )
      */
     public function login()
     {
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Usuário ou senha inválidos'], 401);
         }
 
         return $this->respondWithToken($token);
