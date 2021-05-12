@@ -31,4 +31,85 @@ Considerações importantes:
 - Dados de inserção devem ser validadas;
 - Erros devem ser tratados;
 - Sistema deve ser seguro e as suas informações, consistentes
-## Trabalho em progresso :)  
+## O projeto está em progresso, mas fique a vontade para testar até o ponto atual seguindo os passos abaixo :)
+
+## Instalação 
+
+### 1. Clonar o projeto
+
+```bash
+git clone https://github.com/WenLopes/api-store-management
+```
+
+
+### 2. Configure as variáveis de ambiente
+*Na **raiz do projeto**, crie o arquivo .env do **DOCKER** utilizando o arquivo .env.example como base. Modifique o valor das variáveis de acordo com a sua preferência.*
+
+```bash
+cp .env_example .env
+```
+
+
+*(Opcional) Se desejar, altere as portas padrão da aplicação no arquivo .env*
+
+### 3. Na raíz do projeto, execute o comando:
+```bash
+docker-compose up --build
+```
+
+
+### 4. Instalando as dependências e configurando a API
+*4.1 Instale as dependências do Laravel executando o comando na **raiz do projeto**:*
+```bash
+docker-compose exec php7_base composer install
+```
+
+
+*4.2 Corriga as permissões dos diretórios, executando os comandos abaixo no diretório **api**:*
+
+```bash
+sudo chgrp -R www-data storage bootstrap/cache
+```
+
+
+```bash
+sudo chmod -R ug+rwx storage bootstrap/cache
+```
+
+
+*4.3 Crie o arquivo .env do diretório **api**, utilizando o .env.example como base:*
+
+```bash
+cp .env_example .env
+```
+
+
+*(Opcional) Se desejar, altere o email e senha padrão do funcionário que irá representar nosso usuário do banco de dados*
+
+*4.4 Gere a chave do projeto executando o comando na **raiz do projeto**:*
+
+```bash
+docker-compose exec php7_base php artisan key:generate
+```
+
+
+*4.5 Gere a chave do JWT executando o comando na **raiz do projeto**:*
+
+```bash
+docker-compose exec php7_base php artisan jwt:secret
+```
+
+
+*4.6 Rode as migrations e Seeders executando o comando na **raiz do projeto**:*
+
+```bash
+docker-compose exec php7_base php artisan migrate:refresh --seed
+```
+
+## Rodando os testes
+
+Na **raiz do projeto**, execute o comando:
+
+```bash
+docker-compose exec php7_base vendor/bin/phpunit
+```
