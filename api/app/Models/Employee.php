@@ -25,7 +25,7 @@ class Employee extends Authenticatable implements JWTSubject
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $guarded = ['employee_id'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -33,8 +33,7 @@ class Employee extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password'
     ];
 
     /**

@@ -26,5 +26,5 @@ class Store extends Model
     /**
      * @var string[]
      */
-    protected $guarded = [];
+    protected $guarded = ['store_id'];
 }
