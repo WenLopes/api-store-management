@@ -1,0 +1,129 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API STORE MANAGEMENT",
+        "description": "Api criada para cenários de administração de lojas.",
+        "contact": {
+            "email": "wendel.lopes777@gmail.com.br"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "AuthController"
+                ],
+                "summary": "Autenticação por email e senha",
+                "description": "Autenticação do funcionário deve ser realizada através de email e senha",
+                "operationId": "auth.login",
+                "requestBody": {
+                    "description": "Credenciais do funcionário",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "employee@mail.com.br"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Resposta para credenciais inválidas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Usuário ou senha inválidos"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/profile": {
+            "get": {
+                "tags": [
+                    "AuthController"
+                ],
+                "summary": "Obter dados de funcionário logado",
+                "description": "Retorno de dados do funcionário logado a partir do Token informado no Header",
+                "operationId": "auth.profile",
+                "responses": {
+                    "200": {
+                        "description": "Retorna os dados do funcionário logado"
+                    },
+                    "400": {
+                        "description": "JSON com response de token não informado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "AuthController"
+                ],
+                "summary": "Deslogar",
+                "description": "Inválida o Token e encerra a session",
+                "operationId": "auth.logout",
+                "responses": {
+                    "200": {
+                        "description": "Json com mensagem de sucesso"
+                    },
+                    "400": {
+                        "description": "JSON com response de token não informado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer": {
+                "type": "apiKey",
+                "description": "Bearer Token gerado através da rota de login",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
