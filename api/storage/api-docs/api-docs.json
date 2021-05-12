@@ -63,6 +63,52 @@
                     }
                 }
             }
+        },
+        "/api/auth/profile": {
+            "get": {
+                "tags": [
+                    "AuthController"
+                ],
+                "summary": "Obter dados de funcionário logado",
+                "description": "Retorno de dados do funcionário logado a partir do Token informado no Header",
+                "operationId": "auth.profile",
+                "responses": {
+                    "200": {
+                        "description": "Retorna os dados do funcionário logado"
+                    },
+                    "400": {
+                        "description": "JSON com response de token não informado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "AuthController"
+                ],
+                "summary": "Deslogar",
+                "description": "Inválida o Token e encerra a session",
+                "operationId": "auth.logout",
+                "responses": {
+                    "200": {
+                        "description": "Json com mensagem de sucesso"
+                    },
+                    "400": {
+                        "description": "JSON com response de token não informado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
         }
     },
     "components": {
